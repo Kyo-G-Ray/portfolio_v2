@@ -55,6 +55,7 @@
     },
     "scripts": {
         "dev": "vite",
-        "build": "vite build && node src/replace-path.js && npx http-server ./build"
+        "build": "vite build && node src/replace-path.js",
+        "deploy": "npx http-server ./build"
     }
 }

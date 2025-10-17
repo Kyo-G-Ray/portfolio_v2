@@ -1,9 +1,9 @@
-### frontend 立ち上げ
+### frontend、backend 同時立ち上げ
 
-cd frontend
-npm run front
+root ディレクトリで実行
 
-### backend 立ち上げ
+```
+npm run build:all
+```
 
-cd backend
-npm run develop
+frontend と backend 両方の package.json を参照していろいろ立ち上げてくれる
