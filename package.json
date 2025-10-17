@@ -1,0 +1,25 @@
+{
+  "name": "myportfolio_v2",
+  "version": "1.0.0",
+  "description": "cd frontend npm run front",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install --prefix frontend && npm install --prefix backend",
+    "build:frontend": "npm run build --prefix frontend",
+    "build:backend": "npm run build --prefix backend",
+    "build:all": "npm run build:frontend && npm run build:backend",
+    "deploy:backend": "npm run deploy --prefix backend",
+    "start:frontend": "npm run dev --prefix frontend"
+  },
+  "keywords": [
+    "serverless",
+    "lambda",
+    "react",
+    "typescript"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.2.3"
+  }
+}

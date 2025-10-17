@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild getDynamo.ts --bundle --minify --sourcemap --platform=node --target=node20 --outfile=dist/index.js",
+    "zip": "cd dist && zip -r ../function.zip . && cd .. && zip -r function.zip node_modules",
+    "deploy": "npm run build && npm run zip"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.911.0",
+    "@aws-sdk/lib-dynamodb": "^3.911.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.156",
+    "@types/node": "^24.8.0",
+    "esbuild": "^0.25.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
+}
