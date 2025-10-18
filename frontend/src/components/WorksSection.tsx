@@ -14,15 +14,26 @@ type workProps = {
 
 export function WorksSection({ works, setWorks }: workProps) {
 
+  const isLocalDev = import.meta.env.VITE_DEV;  // ローカル開発の場合True
+
   // 制作実績読み込み
   // const [works, setWorks] = useState<any[] | null>(null); // データとローディング状態
+
 
   useEffect(() => {
     const loadWorkData = async () => {
       const data = await fetchWorks();
       setWorks(data);
     };
-    loadWorkData();
+
+    if (!isLocalDev) {
+      loadWorkData();
+    }
+    else {
+      console.log('ローカル開発');
+      const PARSED_WORKS = JSON.parse(import.meta.env.VITE_WORK);
+      setInterviews(PARSED_WORKS);
+    }
   }, []);
 
 
@@ -30,11 +41,19 @@ export function WorksSection({ works, setWorks }: workProps) {
   const [interviews, setInterviews] = useState<any[] | null>(null); // データとローディング状態
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadInterviewData = async () => {
       const data = await fetchInterviews();
       setInterviews(data);
     };
-    loadData();
+
+    if (!isLocalDev) {
+      loadInterviewData();
+    }
+    else {
+      console.log('ローカル開発');
+      const PARSED_INTERVIEW = JSON.parse(import.meta.env.VITE_INTERVIEW);
+      setWorks(PARSED_INTERVIEW);
+    }
   }, []);
 
 

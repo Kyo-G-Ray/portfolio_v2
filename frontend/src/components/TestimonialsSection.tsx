@@ -14,15 +14,25 @@ type voiceProps = {
 
 export function TestimonialsSection({ voices, setVoices }: voiceProps) {
 
+  const isLocalDev = import.meta.env.VITE_DEV;  // ローカル開発の場合True
+
     // クライアント様の声読み込み
   // const [voices, setVoices] = useState<any[] | null>(null); // データとローディング状態
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadVoiceData = async () => {
       const data = await fetchVoices();
       setVoices(data);
     };
-    loadData();
+
+    if (!isLocalDev) {
+      loadVoiceData();
+    }
+    else {
+      console.log('ローカル開発');
+      const PARSED_VOICE = JSON.parse(import.meta.env.VITE_VOICE);
+      setVoices(PARSED_VOICE);
+    }
   }, []);
 
 
