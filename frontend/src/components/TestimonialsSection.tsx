@@ -41,10 +41,10 @@ export function TestimonialsSection({ voices, setVoices }: voiceProps) {
         <div className="grid md:grid-cols-2 gap-8">
           {voices !== null ? (
             voices
-              .slice() // 元の配列を変更しないようにコピーを作成
-              .sort((a, b) => a.date - b.date) // 日付で昇順にソート
+              // .slice() // 元の配列を変更しないようにコピーを作成
+              // .sort((a, b) => a.date - b.date) // 日付で昇順にソート
               .map((voice, index) =>  {
-                console.log(voice.id);
+                // console.log(voice.id);
 
                 return (
             <div
