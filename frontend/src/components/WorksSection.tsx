@@ -32,7 +32,7 @@ export function WorksSection({ works, setWorks }: workProps) {
     else {
       console.log('ローカル開発');
       const PARSED_WORKS = JSON.parse(import.meta.env.VITE_WORK);
-      setInterviews(PARSED_WORKS);
+      setWorks(PARSED_WORKS);
     }
   }, []);
 
@@ -52,7 +52,7 @@ export function WorksSection({ works, setWorks }: workProps) {
     else {
       console.log('ローカル開発');
       const PARSED_INTERVIEW = JSON.parse(import.meta.env.VITE_INTERVIEW);
-      setWorks(PARSED_INTERVIEW);
+      setInterviews(PARSED_INTERVIEW);
     }
   }, []);
 
