@@ -8,7 +8,7 @@ import * as dotenv from 'dotenv';
 
 // ローカル開発環境でのみ .env を読み込む
 if (process.env.NODE_ENV !== 'production' && process.env.AWS_REGION === undefined) {
-  dotenv.config({ path: '../env' }); // .envファイルのパスを調整してください
+  dotenv.config({ path: '../.env' });
 }
 
 

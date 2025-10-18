@@ -56,10 +56,9 @@ export function WorksSection({ works, setWorks }: workProps) {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {works !== null ? (
               works
-                .slice() // 元の配列を変更しないようにコピーを作成
-                .sort((a, b) => a.image.id - b.image.id) // image.idで昇順にソート
+                // .slice() // 元の配列を変更しないようにコピーを作成
+                // .sort((a, b) => a.image.id - b.image.id) // image.idで昇順にソート
                 .map((work, index) => {
-              const workImageURL = `${BASE_URL}${work.image.formats.thumbnail.url}`;
               
               return (
               <a
@@ -70,7 +69,7 @@ export function WorksSection({ works, setWorks }: workProps) {
                 {/* Image */}
                 <div className="relative overflow-hidden">
                   <ImageWithFallback
-                    src={workImageURL}
+                    src={work.image}
                     alt={work.title}
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                   />
@@ -92,7 +91,7 @@ export function WorksSection({ works, setWorks }: workProps) {
                   </p>
 
                   {/* Tags */}
-                  <div className="flex flex-wrap gap-2 mb-6">
+                  {/* <div className="flex flex-wrap gap-2 mb-6">
                     {work.techs !== null ? (work.techs.map((tech, index_tech) => {
                       return (
                       <span
@@ -103,7 +102,7 @@ export function WorksSection({ works, setWorks }: workProps) {
                       </span>
                     )}
                     )): (<p className="text-gray-400">読み込み中...</p>)}
-                  </div>
+                  </div> */}
 
                   <div className="mt-4 flex items-center text-cyan-400 group-hover:text-cyan-300 transition-colors duration-200">
                     <span className="text-sm">実績を見る</span>
@@ -124,10 +123,10 @@ export function WorksSection({ works, setWorks }: workProps) {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {interviews !== null ? (
               interviews
-                .slice() // 元の配列を変更しないようにコピーを作成
-                .sort((a, b) => a.image.id - b.image.id) // image.idで昇順にソート
+                // .slice() // 元の配列を変更しないようにコピーを作成
+                // .sort((a, b) => a.image.id - b.image.id) // image.idで昇順にソート
                 .map((interview, index) => {
-              const interviewImageURL = `${BASE_URL}${interview.image.formats.thumbnail.url}`;
+              // const interviewImageURL = `${BASE_URL}${interview.image.formats.thumbnail.url}`;
               return (
               <a
                 key={index}
@@ -137,7 +136,7 @@ export function WorksSection({ works, setWorks }: workProps) {
               {/* Image */}
               <div className="relative overflow-hidden">
                 <ImageWithFallback
-                  src={interviewImageURL}
+                  src={interview.image}
                   alt={interview.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                 />

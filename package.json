@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm install --prefix frontend && npm install --prefix backend",
-    "build:frontend": "npm run build --prefix frontend",
+    "build:frontend": "npm run build --prefix frontend && npm run deploy --prefix frontend",
     "build:backend": "npm run build --prefix backend",
     "build:all": "npm run build:frontend && npm run build:backend",
     "deploy:backend": "npm run deploy --prefix backend",
