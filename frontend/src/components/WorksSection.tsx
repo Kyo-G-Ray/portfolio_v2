@@ -23,6 +23,7 @@ export function WorksSection({ works, setWorks }: workProps) {
 
 
   const [worksWithoutImage, setWorksWithoutImage] = useState<any[] | null>(null); // データとローディング状態
+  const [isDoneFetchWorks, setIsDoneFetchWorks] = useState(false);  // 一度画像URL取得が完了したかどうかのフラグ
 
   // works初回読み込み
   useEffect(() => {
@@ -35,6 +36,9 @@ export function WorksSection({ works, setWorks }: workProps) {
 
   // worksが更新されたら画像URLを取得してworksに反映
   useEffect(() => {
+    if (isDoneFetchWorks) { return; }  // 既に一度取得済みなら処理しない
+    if (!worksWithoutImage) { return; }
+
     if (!isLocalDev) {
       console.log("prod work images fetch...");
 
@@ -57,12 +61,15 @@ export function WorksSection({ works, setWorks }: workProps) {
       });
       setWorks(PARSED_WORKS_WITHURL);
     }
+
+    setIsDoneFetchWorks(true);  // 一度画像URLの取得が完了したことを示す
 }, [worksWithoutImage]);
 
 
     // インタビュー読み込み
   const [interviews, setInterviews] = useState<any[] | null>(null); // データとローディング状態
   const [interviewsWithoutImage, setInterviewsWithoutImage] = useState<any[] | null>(null); // データとローディング状態
+  const [isDoneFetchInterviews, setIsDoneFetchInterviews] = useState(false);  // 一度画像URL取得が完了したかどうかのフラグ
 
   useEffect(() => {
     const loadInterviewData = async () => {
@@ -73,6 +80,9 @@ export function WorksSection({ works, setWorks }: workProps) {
   }, []);
 
   useEffect(() => {
+    if (isDoneFetchInterviews) { return; }  // 既に一度取得済みなら処理しない
+    if (!interviewsWithoutImage) { return; }
+
     if (!isLocalDev) {
       console.log("prod interview images fetch...");
 
@@ -94,6 +104,8 @@ export function WorksSection({ works, setWorks }: workProps) {
       });
       setInterviews(PARSED_INTERVIEW_WITHURL);
     }
+
+    setIsDoneFetchInterviews(true);  // 一度画像URLの取得が完了したことを示す
   }, [interviewsWithoutImage]);
 
 
