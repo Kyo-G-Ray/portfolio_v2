@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { BASE_URL } from '../../api/base';
 import { ExternalLink, Github } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { getImageUrl } from '../utils/storage';
+import { fetchWorksWithUrls } from '../utils/fetchImage';
 
 import { fetchWorks } from '../../api/work';  // 制作実績API
 import { fetchInterviews } from '../../api/interview';  // インタビューAPI
@@ -28,11 +30,40 @@ export function WorksSection({ works, setWorks }: workProps) {
 
     if (!isLocalDev) {
       loadWorkData();
+
+      const fetchUrls = async (works) => {
+      //   // 全ての work アイテムに対して非同期でURLを取得する Promise の配列を作成
+      //   const worksWithUrlPromises = works.map(async (work) => {
+      //     const imageUrl = await getImageUrl(work.image, 'public');  // 画像ファイル取得
+      //     return { 
+      //       ...work,
+      //       imageUrl: imageUrl  // 新しいプロパティとして imageUrl を追加
+      //     };
+      //   });
+
+      //   // 全ての Promise が解決するのを待つ
+      //   const worksWithUrls = await Promise.all(worksWithUrlPromises);
+
+      //   setWorks(worksWithUrls); // S3 URLに変換されたデータをセット
+      const worksWithUrls = await fetchWorksWithUrls(
+        works, 
+        getImageUrl, 
+        'public'
+      );
+      fetchUrls(worksWithUrls);
+      };
     }
     else {
       console.log('ローカル開発');
       const PARSED_WORKS = JSON.parse(import.meta.env.VITE_WORK);
-      setWorks(PARSED_WORKS);
+      // ローカルの場合は環境変数からのデータに対しても画像URLを追加処理
+      const PARSED_WORKS_WITHURL = PARSED_WORKS.map((work) => {
+        return { 
+          ...work, 
+          imageUrl: work.image  // 新しいプロパティとして imageUrl を追加
+        };
+      });
+      setWorks(PARSED_WORKS_WITHURL);
     }
   }, []);
 
@@ -88,7 +119,7 @@ export function WorksSection({ works, setWorks }: workProps) {
                 {/* Image */}
                 <div className="relative overflow-hidden">
                   <ImageWithFallback
-                    src={work.image}
+                    src={work.imageUrl}
                     alt={work.title}
                     className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                   />
