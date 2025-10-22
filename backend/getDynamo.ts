@@ -94,4 +94,3 @@ export const handler: APIGatewayProxyHandler = async (event): Promise<APIGateway
 };
 
 
-// https://nknasnkuc6.execute-api.ap-northeast-1.amazonaws.com/table
