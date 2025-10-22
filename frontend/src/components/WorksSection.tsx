@@ -3,7 +3,7 @@ import { BASE_URL } from '../../api/base';
 import { ExternalLink, Github } from 'lucide-react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { getImageUrl } from '../utils/storage';
-import { fetchWorksWithUrls } from '../utils/fetchImage';
+import { fetchDataWithImageUrl } from '../utils/fetchImage';
 
 import { fetchWorks } from '../../api/work';  // 制作実績API
 import { fetchInterviews } from '../../api/interview';  // インタビューAPI
@@ -22,11 +22,13 @@ export function WorksSection({ works, setWorks }: workProps) {
   // const [works, setWorks] = useState<any[] | null>(null); // データとローディング状態
 
 
+  const [worksWithoutImage, setWorksWithoutImage] = useState<any[] | null>(null); // データとローディング状態
+
   // works初回読み込み
   useEffect(() => {
     const loadWorkData = async () => {
       const data = await fetchWorks();
-      setWorks(data);
+      setWorksWithoutImage(data);
     };
       loadWorkData();
   }, []);
@@ -34,17 +36,19 @@ export function WorksSection({ works, setWorks }: workProps) {
   // worksが更新されたら画像URLを取得してworksに反映
   useEffect(() => {
     if (!isLocalDev) {
+      console.log("prod work images fetch...");
+
       const fetchUrls = async (works) => {
-      const worksWithUrls = await fetchWorksWithUrls(works, getImageUrl, 'public');
+      const worksWithUrls = await fetchDataWithImageUrl(works, getImageUrl, 'public');
       setWorks(worksWithUrls);
       };
       fetchUrls(works);
     }
 
     else {
-      console.log('ローカル開発');
-      const PARSED_WORKS = JSON.parse(import.meta.env.VITE_WORK);
-      // ローカルの場合は環境変数からのデータに対しても画像URLを追加処理
+      console.log("dev work images fetch...");
+      const PARSED_WORKS = JSON.parse(import.meta.env.VITE_WORK);  // ローカルの場合は環境変数からのデータに対しても画像URLを追加処理
+      
       const PARSED_WORKS_WITHURL = PARSED_WORKS.map((work) => {
         return { 
           ...work, 
@@ -53,27 +57,44 @@ export function WorksSection({ works, setWorks }: workProps) {
       });
       setWorks(PARSED_WORKS_WITHURL);
     }
-}, [works]);
+}, [worksWithoutImage]);
 
 
     // インタビュー読み込み
   const [interviews, setInterviews] = useState<any[] | null>(null); // データとローディング状態
+  const [interviewsWithoutImage, setInterviewsWithoutImage] = useState<any[] | null>(null); // データとローディング状態
 
   useEffect(() => {
     const loadInterviewData = async () => {
       const data = await fetchInterviews();
-      setInterviews(data);
+      setInterviewsWithoutImage(data);
     };
+    loadInterviewData();
+  }, []);
 
+  useEffect(() => {
     if (!isLocalDev) {
-      loadInterviewData();
+      console.log("prod interview images fetch...");
+
+      const fetchUrls = async (interviews) => {
+      const interviewsWithUrls = await fetchDataWithImageUrl(interviews, getImageUrl, 'public');
+      setInterviews(interviewsWithUrls);
+      };
+      fetchUrls(interviews);
     }
     else {
-      console.log('ローカル開発');
-      const PARSED_INTERVIEW = JSON.parse(import.meta.env.VITE_INTERVIEW);
-      setInterviews(PARSED_INTERVIEW);
+      console.log("dev interview images fetch...");
+
+      const PARSED_INTERVIEW = JSON.parse(import.meta.env.VITE_INTERVIEW);  // ローカルの場合は環境変数からのデータに対しても画像URLを追加処理
+      const PARSED_INTERVIEW_WITHURL = PARSED_INTERVIEW.map((interview) => {
+        return { 
+          ...interview, 
+          imageUrl: interview.image  // 新しいプロパティとして imageUrl を追加
+        };
+      });
+      setInterviews(PARSED_INTERVIEW_WITHURL);
     }
-  }, []);
+  }, [interviewsWithoutImage]);
 
 
   return (
@@ -174,7 +195,7 @@ export function WorksSection({ works, setWorks }: workProps) {
               {/* Image */}
               <div className="relative overflow-hidden">
                 <ImageWithFallback
-                  src={interview.image}
+                  src={interview.imageUrl}
                   alt={interview.title}
                   className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500"
                 />
