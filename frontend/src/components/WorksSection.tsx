@@ -22,37 +22,25 @@ export function WorksSection({ works, setWorks }: workProps) {
   // const [works, setWorks] = useState<any[] | null>(null); // データとローディング状態
 
 
+  // works初回読み込み
   useEffect(() => {
     const loadWorkData = async () => {
       const data = await fetchWorks();
       setWorks(data);
     };
-
-    if (!isLocalDev) {
       loadWorkData();
+  }, []);
 
+  // worksが更新されたら画像URLを取得してworksに反映
+  useEffect(() => {
+    if (!isLocalDev) {
       const fetchUrls = async (works) => {
-      //   // 全ての work アイテムに対して非同期でURLを取得する Promise の配列を作成
-      //   const worksWithUrlPromises = works.map(async (work) => {
-      //     const imageUrl = await getImageUrl(work.image, 'public');  // 画像ファイル取得
-      //     return { 
-      //       ...work,
-      //       imageUrl: imageUrl  // 新しいプロパティとして imageUrl を追加
-      //     };
-      //   });
-
-      //   // 全ての Promise が解決するのを待つ
-      //   const worksWithUrls = await Promise.all(worksWithUrlPromises);
-
-      //   setWorks(worksWithUrls); // S3 URLに変換されたデータをセット
-      const worksWithUrls = await fetchWorksWithUrls(
-        works, 
-        getImageUrl, 
-        'public'
-      );
-      fetchUrls(worksWithUrls);
+      const worksWithUrls = await fetchWorksWithUrls(works, getImageUrl, 'public');
+      setWorks(worksWithUrls);
       };
+      fetchUrls(works);
     }
+
     else {
       console.log('ローカル開発');
       const PARSED_WORKS = JSON.parse(import.meta.env.VITE_WORK);
@@ -65,7 +53,7 @@ export function WorksSection({ works, setWorks }: workProps) {
       });
       setWorks(PARSED_WORKS_WITHURL);
     }
-  }, []);
+}, [works]);
 
 
     // インタビュー読み込み
