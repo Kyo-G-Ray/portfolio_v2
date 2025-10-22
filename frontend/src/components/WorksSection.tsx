@@ -42,7 +42,7 @@ export function WorksSection({ works, setWorks }: workProps) {
       const worksWithUrls = await fetchDataWithImageUrl(works, getImageUrl, 'public');
       setWorks(worksWithUrls);
       };
-      fetchUrls(works);
+      fetchUrls(worksWithoutImage);
     }
 
     else {
@@ -80,7 +80,7 @@ export function WorksSection({ works, setWorks }: workProps) {
       const interviewsWithUrls = await fetchDataWithImageUrl(interviews, getImageUrl, 'public');
       setInterviews(interviewsWithUrls);
       };
-      fetchUrls(interviews);
+      fetchUrls(interviewsWithoutImage);
     }
     else {
       console.log("dev interview images fetch...");
