@@ -14,24 +14,24 @@ import { getImageUrl } from './storage';
 
 
 
-export const fetchWorksWithUrls = async (works, getImageUrl, scope = 'public') => {
-  if (!works || works.length === 0) {
+export const fetchDataWithImageUrl = async (els, getImageUrl, scope = 'public') => {
+  if (!els || els.length === 0) {
     return [];
   }
 
   // 全ての work アイテムに対して非同期でURLを取得する Promise の配列を作成
-  const worksWithUrlPromises = works.map(async (work) => {
+  const elsWithUrlPromises = els.map(async (el) => {
     // getImageUrl は外部から渡される関数
-    const imageUrl = await getImageUrl(work.image, scope);  // 画像ファイル取得
+    const imageUrl = await getImageUrl(el.image, scope);  // 画像ファイル取得
 
     return { 
-      ...work,
+      ...el,
       imageUrl: imageUrl  // 新しいプロパティとして imageUrl を追加
     };
   });
 
   // 全ての Promise が解決するのを待つ
-  const worksWithUrls = await Promise.all(worksWithUrlPromises);
+  const elsWithUrls = await Promise.all(elsWithUrlPromises);
 
-  return worksWithUrls;
+  return elsWithUrls;
 };
