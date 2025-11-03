@@ -57,7 +57,7 @@ export function SkillsSection({ tools, setTools }: skillProps) {
   useEffect(() => {
     if (isDoneFetchTools) { return; }  // 既に一度取得済みなら処理しない
 
-    if (!isLocalDev) {
+    if (isLocalDev) {
       console.log("prod tool images fetch...");
 
       const useTools = [
@@ -81,18 +81,17 @@ export function SkillsSection({ tools, setTools }: skillProps) {
       console.log("dev tool images fetch...");
 
       const useTools = [
-        { name: 'VS Code', image: '💻', imageURL: "/figs/icon/vscode.webp" },
-        { name: 'Git / GitHub', image: '📝', imageURL: "./figs/icon/github.webp" },
-        { name: 'Figma', image: '🎨', imageURL: "./figs/icon/figma.webp" },
-        { name: 'Slack', image: '💬', imageURL: "./figs/icon/slack.webp" },
-        { name: 'ChatWork', image: '💬', imageURL: "./figs/icon/chatwork.webp" },
-        { name: 'LINE', image: '💬', imageURL: "./figs/icon/line.webp" },
-        { name: 'Notion', image: '📓', imageURL: "./figs/icon/notion.webp" },
+        { name: 'VS Code', image: '💻', imageUrl: "/figs/icon/vscode.webp" },
+        { name: 'Git / GitHub', image: '📝', imageUrl: "./figs/icon/github.webp" },
+        { name: 'Figma', image: '🎨', imageUrl: "./figs/icon/figma.webp" },
+        { name: 'Slack', image: '💬', imageUrl: "./figs/icon/slack.webp" },
+        { name: 'ChatWork', image: '💬', imageUrl: "./figs/icon/chatwork.webp" },
+        { name: 'LINE', image: '💬', imageUrl: "./figs/icon/line.webp" },
+        { name: 'Notion', image: '📓', imageUrl: "./figs/icon/notion.webp" },
       ];
 
       setTools(useTools);
     }
-    console.log(tools);
     setIsDoneFetchTools(true);  // 一度画像URLの取得が完了したことを示す
   }, []);
 
@@ -210,11 +209,11 @@ export function SkillsSection({ tools, setTools }: skillProps) {
                     {tool.image}
                   </div> */}
                   <ImageWithFallback 
-                    src={tool.imageURL}
+                    src={tool.imageUrl}
                     alt={tool.name}
                     className="mx-auto mb-2 w-12 h-12 object-contain"
                   />
-                  <div className="text-gray-300 text-sm">{tool.name}{tool.imageUrl}</div>
+                  <div className="text-gray-300 text-sm">{tool.name}</div>
                 </motion.div>
               );
             })) : (<p className="text-gray-400">読み込み中...</p>)}
