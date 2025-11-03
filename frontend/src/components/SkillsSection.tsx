@@ -1,8 +1,23 @@
+import { useState, useEffect } from 'react';
+import { getImageUrl } from '../utils/storage';
+import { fetchDataWithImageUrl } from '../utils/fetchImage';
 import { motion } from 'motion/react';
 import { WaveSection } from './WaveSection';
 import { SectionTitle } from './SectionTitle';
+import { ImageWithFallback } from './figma/ImageWithFallback';
 
-export function SkillsSection() {
+
+
+
+type skillProps = {
+  tools: any[] | null;
+  setTools: React.Dispatch<React.SetStateAction<any[] | null>>;
+}
+
+export function SkillsSection({ tools, setTools }: skillProps) {
+
+  const isLocalDev = import.meta.env.VITE_DEV;  // ローカル開発の場合True
+
   const skillCategories = [
     {
       category: 'Web Development',
@@ -35,15 +50,53 @@ export function SkillsSection() {
   //   { name: 'Python Institute', year: '2022', level: 'PCAP' },
   // ];
 
-  const tools = [
-    { name: 'VS Code', icon: '💻' },
-    { name: 'Git / GitHub', icon: '📝' },
-    { name: 'Figma', icon: '🎨' },
-    { name: 'Slack', icon: '💬' },
-    { name: 'ChatWork', icon: '💬' },
-    { name: 'LINE', icon: '💬' },
-    { name: 'Notion', icon: '📓' },
-  ];
+
+  const [isDoneFetchTools, setIsDoneFetchTools] = useState(false);  // 一度画像URL取得が完了したかどうかのフラグ
+  // const [toolWithImages, setToolWithImages] = useState<any[] | null>(null); // データとローディング状態
+
+  useEffect(() => {
+    if (isDoneFetchTools) { return; }  // 既に一度取得済みなら処理しない
+
+    if (!isLocalDev) {
+      console.log("prod tool images fetch...");
+
+      const useTools = [
+        { name: 'VS Code', image: 'vscode.webp' },
+        { name: 'Git / GitHub', image: 'github.webp' },
+        { name: 'Figma', image: 'figma.webp' },
+        { name: 'Slack', image: 'slack.webp' },
+        { name: 'ChatWork', image: 'chatwork.webp' },
+        { name: 'LINE', image: 'line.webp' },
+        { name: 'Notion', image: 'notion.webp' },
+      ];
+
+      const fetchUrls = async (useTools) => {
+        const toolsWithUrls = await fetchDataWithImageUrl(useTools, getImageUrl, 'public');
+        setTools(toolsWithUrls);
+      };
+      fetchUrls(useTools);
+    }
+
+    else {
+      console.log("dev tool images fetch...");
+
+      const useTools = [
+        { name: 'VS Code', image: '💻', imageURL: "/figs/icon/vscode.webp" },
+        { name: 'Git / GitHub', image: '📝', imageURL: "./figs/icon/github.webp" },
+        { name: 'Figma', image: '🎨', imageURL: "./figs/icon/figma.webp" },
+        { name: 'Slack', image: '💬', imageURL: "./figs/icon/slack.webp" },
+        { name: 'ChatWork', image: '💬', imageURL: "./figs/icon/chatwork.webp" },
+        { name: 'LINE', image: '💬', imageURL: "./figs/icon/line.webp" },
+        { name: 'Notion', image: '📓', imageURL: "./figs/icon/notion.webp" },
+      ];
+
+      setTools(useTools);
+    }
+    console.log(tools);
+    setIsDoneFetchTools(true);  // 一度画像URLの取得が完了したことを示す
+  }, []);
+
+
 
   return (
     <WaveSection id="skills" waveTop className="py-40 bg-gradient-to-br from-slate-900/80 to-emerald-900/30">
@@ -143,20 +196,28 @@ export function SkillsSection() {
           <h3 className="text-3xl text-cyan-400 text-center mb-8">開発ツール & ワークフロー</h3>
           
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {tools.map((tool, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-4 text-center hover:bg-white/10 transition-all duration-300 hover:scale-105 group"
-              >
-                <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-200">
-                  {tool.icon}
-                </div>
-                <div className="text-gray-300 text-sm">{tool.name}</div>
-              </motion.div>
-            ))}
+            {tools !== null ? (
+            tools.map((tool, index) => {
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl p-4 text-center hover:bg-white/10 transition-all duration-300 hover:scale-105 group"
+                >
+                  {/* <div className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-200">
+                    {tool.image}
+                  </div> */}
+                  <ImageWithFallback 
+                    src={tool.imageURL}
+                    alt={tool.name}
+                    className="mx-auto mb-2 w-12 h-12 object-contain"
+                  />
+                  <div className="text-gray-300 text-sm">{tool.name}{tool.imageUrl}</div>
+                </motion.div>
+              );
+            })) : (<p className="text-gray-400">読み込み中...</p>)}
           </div>
 
           <div className="mt-8 text-center">
