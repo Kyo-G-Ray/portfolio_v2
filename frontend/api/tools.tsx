@@ -2,12 +2,12 @@
 import { API_URL } from './base';
 
 
-// TODO interview, voiceのAPIを一つのメソッドに変更
 /**
  * Strapiから制作実績のデータを取得する関数
  * @returns 制作実績データの配列 (Promise)
  */
-export async function fetchWorks() {
+
+export async function fetchTools() {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const API_URL = `${BASE_URL}/portfolioTable?type=work`;
