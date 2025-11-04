@@ -57,7 +57,7 @@ export function SkillsSection({ tools, setTools }: skillProps) {
   useEffect(() => {
     if (isDoneFetchTools) { return; }  // 既に一度取得済みなら処理しない
 
-    if (isLocalDev) {
+    if (!isLocalDev) {
       console.log("prod tool images fetch...");
 
       const useTools = [
@@ -82,12 +82,12 @@ export function SkillsSection({ tools, setTools }: skillProps) {
 
       const useTools = [
         { name: 'VS Code', image: '💻', imageUrl: "/figs/icon/vscode.webp" },
-        { name: 'Git / GitHub', image: '📝', imageUrl: "./figs/icon/github.webp" },
-        { name: 'Figma', image: '🎨', imageUrl: "./figs/icon/figma.webp" },
-        { name: 'Slack', image: '💬', imageUrl: "./figs/icon/slack.webp" },
-        { name: 'ChatWork', image: '💬', imageUrl: "./figs/icon/chatwork.webp" },
-        { name: 'LINE', image: '💬', imageUrl: "./figs/icon/line.webp" },
-        { name: 'Notion', image: '📓', imageUrl: "./figs/icon/notion.webp" },
+        { name: 'Git / GitHub', image: '📝', imageUrl: "/figs/icon/github.webp" },
+        { name: 'Figma', image: '🎨', imageUrl: "/figs/icon/figma.webp" },
+        { name: 'Slack', image: '💬', imageUrl: "/figs/icon/slack.webp" },
+        { name: 'ChatWork', image: '💬', imageUrl: "/figs/icon/chatwork.webp" },
+        { name: 'LINE', image: '💬', imageUrl: "/figs/icon/line.webp" },
+        { name: 'Notion', image: '📓', imageUrl: "/figs/icon/notion.webp" },
       ];
 
       setTools(useTools);
