@@ -16,23 +16,27 @@ export function TestimonialsSection({ voices, setVoices }: voiceProps) {
 
   const isLocalDev = import.meta.env.VITE_DEV;  // ローカル開発の場合True
 
-    // クライアント様の声読み込み
-  // const [voices, setVoices] = useState<any[] | null>(null); // データとローディング状態
+  const [isDoneFetchVoices, setIsDoneFetchVoices] = useState(false);  // 一度画像URL取得が完了したかどうかのフラグ
 
   useEffect(() => {
+    if (isDoneFetchVoices) { return; }  // 既に一度取得済みなら処理しない
+
     const loadVoiceData = async () => {
       const data = await fetchVoices();
       setVoices(data);
     };
 
     if (!isLocalDev) {
+      console.log("prod voice data fetch...");
+
       loadVoiceData();
     }
     else {
-      console.log('ローカル開発');
+      console.log("dev voice data fetch...");
       const PARSED_VOICE = JSON.parse(import.meta.env.VITE_VOICE);
       setVoices(PARSED_VOICE);
     }
+    setIsDoneFetchVoices(true);
   }, []);
 
 
