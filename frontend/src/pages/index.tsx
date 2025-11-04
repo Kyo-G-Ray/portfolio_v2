@@ -26,7 +26,7 @@ Amplify.configure({
     // TODO ハードコーディング絶対やめる
     // Identity Pool ID は、ユーザー認証フローがない場合、Cognito設定に直接含めることが推奨されます
     aws_cognito_identity_pool_id: 'ap-northeast-1:1ac52806-6707-4d6e-91be-1d9b67211b1c', 
-    
+
     // S3 設定
     aws_user_files_s3_bucket: 'kyoport-figs',
 
