@@ -18,10 +18,6 @@ export function WorksSection({ works, setWorks }: workProps) {
 
   const isLocalDev = import.meta.env.VITE_DEV;  // ローカル開発の場合True
 
-  // 制作実績読み込み
-  // const [works, setWorks] = useState<any[] | null>(null); // データとローディング状態
-
-
   const [worksWithoutImage, setWorksWithoutImage] = useState<any[] | null>(null); // データとローディング状態
   const [isDoneFetchWorks, setIsDoneFetchWorks] = useState(false);  // 一度画像URL取得が完了したかどうかのフラグ
 
