@@ -19,20 +19,22 @@ import { getCurrentUser } from 'aws-amplify/auth'; // Authモジュールを使�
 
 
 
+
 Amplify.configure({
-    // 従来のAuth, Storageオブジェクトではなく、直接サービスのエンドポイントを設定
-    aws_project_region: 'ap-northeast-1', // リージョンはプロジェクト全体で設定
-    
-    // TODO ハードコーディング絶対やめる
-    // Identity Pool ID は、ユーザー認証フローがない場合、Cognito設定に直接含めることが推奨されます
-    aws_cognito_identity_pool_id: 'ap-northeast-1:1ac52806-6707-4d6e-91be-1d9b67211b1c', 
+  // 従来のAuth, Storageオブジェクトではなく、直接サービスのエンドポイントを設定
+  aws_project_region: import.meta.env.VITE_AWS_REGION, // リージョンはプロジェクト全体で設定
+  
+  // TODO ハードコーディング絶対やめる
+  // Identity Pool ID は、ユーザー認証フローがない場合、Cognito設定に直接含めることが推奨されます
+  aws_cognito_identity_pool_id: import.meta.env.VITE_COGNITO_IDENTITY_POOL_ID, 
 
-    // S3 設定
-    aws_user_files_s3_bucket: 'kyoport-figs',
+  // S3 設定
+  aws_user_files_s3_bucket: import.meta.env.VITE_S3_BUCKET,
 
-    // S3 リージョン設定
-    aws_user_files_s3_bucket_region: 'ap-northeast-1',
+  // S3 リージョン設定
+  aws_user_files_s3_bucket_region: import.meta.env.VITE_AWS_REGION,
 });
+
 
 
 
