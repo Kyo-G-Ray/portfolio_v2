@@ -4,28 +4,101 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { timeStamp } from 'console';
+import DOMPurify from 'dompurify';
+
+
+
+
 
 export function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
+    timeStamp: '',
     name: '',
     email: '',
     company: '',
     service: '',
     budget: '',
     timeline: '',
-    message: ''
+    message: '',
+    hp:''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+// 1. errors stateの追加
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  // 2. validateForm関数の作成
+  const validateForm = () => {
+    let newErrors: { [key: string]: string } = {};
+    let isValid = true;
+
+    // 例: 名前 (name) が必須
+    if (!formData.name.trim()) {
+      newErrors.name = 'お名前は必須です。';
+      isValid = false;
+    }
+
+    // 例: メールアドレス (email) が必須かつ形式チェック
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!formData.email.trim()) {
+      newErrors.email = 'メールアドレスは必須です。';
+      isValid = false;
+    }
+    else if (!emailRegex.test(formData.email)) {
+      newErrors.email = '有効なメールアドレスを入力してください。';
+      isValid = false;
+    }
+
+    // 例: メッセージ (message) が必須
+    if (!formData.message.trim()) {
+      newErrors.message = 'お問い合わせ内容は必須です。';
+      isValid = false;
+    }
+
+    setErrors(newErrors); // エラー情報を更新
+    return isValid;
+  };
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the form data to your backend
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
+
+
+    if (isSubmitting || !validateForm()) {
+      return;
+    }
+    setIsSubmitting(true);
+
+
+    try {
+      const response = await fetch(
+
+        import.meta.env.VITE_GAS_URL,
+        {
+          method: "POST",
+          mode: "no-cors", // GAS側がCORS対応していないのでこれでOK
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      console.log("送信成功:", formData);
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error("送信エラー:", error);
+    } finally {
+      // 処理が完了したらフラグを下ろす（成功・失敗に関わらず）
+      setIsSubmitting(false); 
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    const sanitizedValue = DOMPurify.sanitize(value.trim()); // サニタイズ
+    setFormData(prev => ({ ...prev, [field]: sanitizedValue }));
   };
 
   if (isSubmitted) {
@@ -224,10 +297,22 @@ export function ContactSection() {
                 />
               </div>
 
+              <div style={{ display: 'none' }} aria-hidden="true">
+                <label htmlFor="hp">ボット対策</label>
+                <Input
+                  id="hp"
+                  type="text"
+                  value={formData.hp}
+                  onChange={(e) => handleInputChange('hp', e.target.value)}
+                />
+              </div>
+
               <Button
                 type="submit"
+                disabled={isSubmitting || isSubmitted}
                 className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white py-3 text-lg group"
               >
+                {isSubmitting ? '送信中...' : '送信する'}
                 <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform duration-200" />
                 お問い合わせを送信
               </Button>
