@@ -10,6 +10,7 @@ import { SkillsSection } from '../components/SkillsSection';
 import { WorksSection } from '../components/WorksSection';
 import { TestimonialsSection } from '../components/TestimonialsSection';
 import { ContactSection } from '../components/ContactSection';
+import { FaviconManager } from '../components/head';
 import { Footer } from '../components/Footer';
 
 import { createRoot } from "react-dom/client";
@@ -50,6 +51,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-900 text-white overflow-x-hidden">
+      <FaviconManager />
       <TrackNavigation />
       <AdvancedHeroSection />
       <AboutSection />
