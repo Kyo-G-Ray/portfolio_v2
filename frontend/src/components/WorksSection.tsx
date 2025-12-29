@@ -234,11 +234,14 @@ export function WorksSection({ works, setWorks }: workProps) {
                   <span className="text-sm">記事を読む</span>
                   <ExternalLink size={14} className="ml-2" />
                 </div>
-                </div>
-              </a>
+              </div>
+            </a>
             );
             })) : (<p className="text-gray-400">読み込み中...</p>)}
           </div>
+          <p className="text-gray-400 text-xs mt-16">
+          【重要：所属先への連絡に関する厳重な警告】<br />本サイトに掲載している実績およびインタビュー記事は、個人の活動内容を公開しているものであり、所属企業（就業先）の事業とは一切無関係です。<br />本活動に関する所属企業への直接の連絡（電話、メール、SNS等）は、手段の如何を問わず一切を固く禁じます。<br />万が一、所属企業への連絡により所属企業の業務や私個人の活動への支障が生じた場合、偽計業務妨害罪等の刑事罰、および損害賠償請求を含む法的措置を辞さない構えであり、厳正に対処いたします。
+          </p>
         </div>
       </div>
     </section>
